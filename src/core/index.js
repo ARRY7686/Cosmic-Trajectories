@@ -312,6 +312,10 @@ createSatellite(0, 0, 20200, 55, "GPS");
 createSatellite(0, 0, 23222, 56, "Galileo");
 createSatellite(0, 0, 705, 98.2, "Landsat");
 createSatellite(0, 0, 700, 98.6, "Sentinel");
+createSatellite(0, 0, 639, 97.9, "ALOS");
+createSatellite(0, 0, 680, 98.1, "Alsat");
+createSatellite(0, 0, 764, 98.5, "Amazônia");
+
 
 // Resize handling
 function handleWindowResize() {
