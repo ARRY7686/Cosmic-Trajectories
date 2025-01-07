@@ -4,12 +4,150 @@ import { OrbitControls } from "jsm/controls/OrbitControls.js";
 import getStarfield from "../utils/getStarfield.js";
 import { getFresnelMat } from "../utils/getFresnelMat.js";
 
+// Create modern loading screen
+const loadingScreen = document.createElement('div');
+Object.assign(loadingScreen.style, {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    background: '#000000',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: '1000',
+    color: 'white',
+    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    transition: 'opacity 0.5s ease-in-out'
+});
+
+// Create loading container
+const loadingContainer = document.createElement('div');
+Object.assign(loadingContainer.style, {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '2.5rem',
+    maxWidth: '400px',
+    padding: '2rem',
+    textAlign: 'center'
+});
+
+// Create loading ring
+const loadingRing = document.createElement('div');
+Object.assign(loadingRing.style, {
+    width: '60px',
+    height: '60px',
+    borderRadius: '50%',
+    border: '2px solid rgba(255, 255, 255, 0.1)',
+    borderTop: '2px solid white',
+    animation: 'rotate 1s linear infinite'
+});
+
+// Add animations
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+`;
+document.head.appendChild(styleSheet);
+
+// Create title
+const loadingTitle = document.createElement('div');
+loadingTitle.textContent = 'EARTH VISUALIZATION';
+Object.assign(loadingTitle.style, {
+    fontSize: '16px',
+    fontWeight: '500',
+    letterSpacing: '3px',
+    textTransform: 'uppercase'
+});
+
+// Create status container
+const statusContainer = document.createElement('div');
+Object.assign(statusContainer.style, {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '1.5rem',
+    width: '100%'
+});
+
+// Create progress text
+const progressText = document.createElement('div');
+Object.assign(progressText.style, {
+    fontSize: '14px',
+    color: 'rgba(255, 255, 255, 0.6)',
+    fontFamily: 'monospace',
+    letterSpacing: '1px'
+});
+
+// Create progress container
+const progressContainer = document.createElement('div');
+Object.assign(progressContainer.style, {
+    width: '180px',
+    height: '1px',
+    background: 'rgba(255, 255, 255, 0.1)',
+    position: 'relative'
+});
+
+// Create progress fill
+const progressFill = document.createElement('div');
+Object.assign(progressFill.style, {
+    width: '0%',
+    height: '100%',
+    background: '#ffffff',
+    transition: 'width 0.3s ease-out'
+});
+
+// Assemble the loading screen
+progressContainer.appendChild(progressFill);
+statusContainer.appendChild(progressText);
+statusContainer.appendChild(progressContainer);
+
+loadingContainer.appendChild(loadingRing);
+loadingContainer.appendChild(loadingTitle);
+loadingContainer.appendChild(statusContainer);
+
+loadingScreen.appendChild(loadingContainer);
+document.body.appendChild(loadingScreen);
+
+// Create loading manager
+const loadManager = new THREE.LoadingManager();
+let totalItems = 0;
+let loadedItems = 0;
+
+loadManager.onStart = function(url, itemsLoaded, itemsTotal) {
+    totalItems = itemsTotal;
+};
+
+loadManager.onProgress = function(url, itemsLoaded, itemsTotal) {
+    const progress = (itemsLoaded / itemsTotal) * 100;
+    progressFill.style.width = `${progress}%`;
+    progressText.textContent = `LOADING ${Math.round(progress)}%`;
+};
+
+loadManager.onLoad = function() {
+    loadingScreen.style.opacity = '0';
+    setTimeout(() => {
+        loadingScreen.style.display = 'none';
+        animateIntro();
+    }, 500);
+};
+
 // Scene setup
 const w = window.innerWidth;
 const h = window.innerHeight;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
-camera.position.z = 20; // Start farther for welcome animation
+camera.position.z = 20;
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(w, h);
 document.body.appendChild(renderer.domElement);
@@ -23,7 +161,7 @@ scene.add(earthGroup);
 new OrbitControls(camera, renderer.domElement);
 
 // Load textures
-const loader = new THREE.TextureLoader();
+const loader = new THREE.TextureLoader(loadManager);
 const detail = 12;
 const geometry = new THREE.IcosahedronGeometry(1, detail);
 
@@ -68,7 +206,7 @@ const starMaterial = new THREE.PointsMaterial({
   color: 0xffffff,
   size: 0.1,
   transparent: true,
-  opacity: 0, // Start invisible for welcome animation
+  opacity: 0,
 });
 const stars = getStarfield({ numStars: 2000, material: starMaterial });
 scene.add(stars);
@@ -80,7 +218,7 @@ scene.add(sunLight);
 
 // Store all satellites and their trails for animation
 const satellites = [];
-const MAX_TRAIL_LENGTH = 100; // Number of positions to keep in trail
+const MAX_TRAIL_LENGTH = 100;
 
 // Satellite creation
 function createSatellite(longitude, latitude, height, inclination, name) {
@@ -88,7 +226,7 @@ function createSatellite(longitude, latitude, height, inclination, name) {
   const satelliteGroup = new THREE.Group();
   earthGroup.add(satelliteGroup);
 
-  const earthRadius = 6371; // km
+  const earthRadius = 6371;
   const scaledHeight = (earthRadius + height) / earthRadius;
 
   const planeGeometry = new THREE.PlaneGeometry(0.05, 0.05);
@@ -147,13 +285,12 @@ function createSatellite(longitude, latitude, height, inclination, name) {
   const trailMaterial = new THREE.LineBasicMaterial({
     color: 0xffffff,
     transparent: true,
-    opacity: 1.0,
+    opacity: 1,
   });
   
   const trail = new THREE.Line(trailGeometry, trailMaterial);
   satelliteGroup.add(trail);
 
-  // Store orbital parameters and trail
   satellite.userData = {
     orbitRadius: scaledHeight,
     orbitSpeed: 0.005 * Math.pow(scaledHeight, -1.5),
@@ -188,7 +325,7 @@ window.addEventListener("resize", handleWindowResize, false);
 let introAnimationDone = false;
 
 function animateIntro() {
-  const introDuration = 5; // seconds
+  const introDuration = 5;
   const startTime = performance.now();
 
   function introLoop(time) {
@@ -196,8 +333,8 @@ function animateIntro() {
 
     if (elapsed < introDuration) {
       const progress = elapsed / introDuration;
-      camera.position.z = 20 - progress * 15; // Zoom in
-      starMaterial.opacity = progress; // Fade in stars
+      camera.position.z = 20 - progress * 15;
+      starMaterial.opacity = progress;
     } else {
       introAnimationDone = true;
     }
@@ -227,27 +364,22 @@ function animateMain() {
       const { orbitRadius, orbitSpeed, orbitAngle, trail, positions } = satellite.userData;
       satellite.userData.orbitAngle += orbitSpeed;
       
-      // Calculate new position
       satellite.position.x = orbitRadius * Math.cos(satellite.userData.orbitAngle);
       satellite.position.z = orbitRadius * Math.sin(satellite.userData.orbitAngle);
       
-      // Make satellite always face Earth
       satellite.lookAt(0, 0, 0);
       satellite.rotateY(Math.PI);
 
-      // Update trail positions
       positions.push(new THREE.Vector3(
         satellite.position.x,
         satellite.position.y,
         satellite.position.z
       ));
       
-      // Keep trail at fixed length
       if (positions.length > MAX_TRAIL_LENGTH) {
         positions.shift();
       }
 
-      // Update trail geometry
       const positions_array = new Float32Array(positions.length * 3);
       for (let i = 0; i < positions.length; i++) {
         positions_array[i * 3] = positions[i].x;
@@ -268,6 +400,3 @@ function animateMain() {
 
   mainLoop();
 }
-
-// Start the intro animation
-animateIntro();
