@@ -2,16 +2,11 @@ import * as THREE from "three";
 import { OrbitControls } from "jsm/controls/OrbitControls.js";
 import getStarfield from "../utils/getStarfield.js";
 import { getFresnelMat } from "../utils/getFresnelMat.js";
-import {
-  createIntroSequence,
-  startIntroSequence,
-} from "../utils/introSequence.js";
+import { createIntroSequence,startIntroSequence } from "../utils/introSequence.js";
 import { createLoadingScreen } from "../utils/loadingScreen.js";
 import { createSatellite } from "../utils/satellite.js";
-import {
-  setLoadingElements,
-  getLoadingElements,
-} from "../utils/loadingState.js";
+import { setLoadingElements,getLoadingElements } from "../utils/loadingState.js";
+import playBackgroundMusic from "../utils/backgroundMusic.js";
 
 const introElements = createIntroSequence();
 const loadingElements = createLoadingScreen();
@@ -19,6 +14,7 @@ setLoadingElements(loadingElements);
 
 document.addEventListener("DOMContentLoaded", () => {
   startIntroSequence(introElements);
+  playBackgroundMusic("../../assets/music/song1.mp3", 0.5);
 });
 
 export function initializeVisualization() {
@@ -32,7 +28,6 @@ export function initializeVisualization() {
 
   loadManager.onStart = function (url, itemsLoaded, itemsTotal) {
     totalItems = itemsTotal;
-    // Make sure the elements exist before updating them
     if (progressFill && progressText) {
       progressFill.style.width = "0%";
       progressText.textContent = "LOADING 0%";
@@ -52,7 +47,6 @@ export function initializeVisualization() {
     console.log(`Loading progress: ${progress}%`);
   };
 
-  // Fix: Use loadingScreen from getLoadingElements
   loadManager.onLoad = function () {
     if (loadingScreen) {
       // Check if loadingScreen exists
@@ -176,9 +170,6 @@ export function initializeVisualization() {
   }
   window.addEventListener("resize", handleWindowResize, false);
 
-  // // Declare animation state at top level
-  // let introAnimationDone = false;
-  
 
   // Welcome Animation
   function animateIntro() {
