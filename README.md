@@ -1,55 +1,43 @@
-# Cosmic Trajectories
+# Satellite Tracker
 
-Welcome to **Cosmic Trajectories**, a captivating 3D visualization built with Three.js. Explore Earth and its major satellites in orbit, providing an interactive and immersive experience of space. As the project evolves, we aim to expand the view to include more planets, offering a comprehensive look at our solar system.
+An interactive 3D visualization of Earth's satellites using Three.js.
 
-## Table of Contents
-- [Features](#features)
-- [Installation](#installation)
-- [Technologies](#technologies)
-- [Architecture](#architecture)
-- [Core Files and Modules](#core-files-and-modules)
-- [File Structure](#file-structure)
-- [License](#license)
-- [Contributing](#contributing)
-
-### Features:
-- Interactive 3D model of Earth with satellites
-- Dynamic space exploration powered by Three.js
-- Future expansions to include additional planets
-- Real-time 3D Earth visualization
-- Multiple satellite orbit tracking
-- Interactive camera controls
+## Features
+- Real-time 3D Earth visualization with realistic textures
+- Dynamic satellite orbit tracking with trails
+- Interactive camera controls with zoom and pan
+- Atmospheric effects using Fresnel shaders
 - Loading screen with progress tracking
-- Intro sequence with animation
-- Atmospheric effects
-- Dynamic satellite trails
-- Satellite labels
+- Animated intro sequence
+- Background starfield
+- Satellite labels and information
 
-### Installation
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/ARRY7686/Cosmic-Trajectories.git
-   ```
+## Prerequisites
+- Node.js (v14 or higher)
+- Modern web browser with WebGL support
+- Git
 
-2. Navigate to the project folder:
-   ```bash
-   cd Cosmic-Trajectories
-   ```
+## Installation
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/satellite-tracker.git
+cd satellite-tracker
+```
 
 3. Open `index.html` in your browser.
 
-### Technologies:
+## Technologies:
 - Three.js for 3D rendering and animation
 - JavaScript (ES6+) for core functionality
 - HTML5/CSS3 for UI components
 
-### Architecture
+## Architecture
 The project is structured as follows:
 - `assets/`: Contains textures, videos, and other static assets
 - `public/`: Contains the main HTML file
 - `src/`: Contains the core JavaScript files and utility modules
 
-### Core Files and Modules
+## Core Files and Modules
 - **[src/core/index.js](src/core/index.js)**: The main entry point of the application. It sets up the Three.js scene, camera, renderer, and adds the Earth model, satellites, and starfield. It also handles the animation loop and window resizing.
 - **[src/utils/introSequence.js](src/utils/introSequence.js)**: Manages intro animation sequence
 - **[src/utils/loadingScreen.js](src/utils/loadingScreen.js)**: Creates and manages loading screen UI
