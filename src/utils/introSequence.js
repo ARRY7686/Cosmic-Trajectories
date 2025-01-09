@@ -1,6 +1,7 @@
 import { createLoadingScreen } from "./loadingScreen.js";
 import { initializeVisualization } from "../core/index.js";
 import { getLoadingElements } from './loadingState.js';
+import playBackgroundMusic from "./backgroundMusic.js";
 
 export function createIntroSequence() {
     const introContainer = document.createElement('div');
@@ -121,6 +122,7 @@ export function startIntroSequence(introElements) {
     }, 4000);
 
     proceedButton.addEventListener('click', () => {
+        playBackgroundMusic('../../assets/music/song1.mp3', 0.5);
         introContainer.style.transition = 'opacity 1s ease-out';
         introContainer.style.opacity = '0';
 
