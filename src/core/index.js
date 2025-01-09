@@ -6,7 +6,7 @@ import { createIntroSequence,startIntroSequence } from "../utils/introSequence.j
 import { createLoadingScreen } from "../utils/loadingScreen.js";
 import { createSatellite } from "../utils/satellite.js";
 import { setLoadingElements,getLoadingElements } from "../utils/loadingState.js";
-import playBackgroundMusic from "../utils/backgroundMusic.js";
+
 
 const introElements = createIntroSequence();
 const loadingElements = createLoadingScreen();
@@ -14,7 +14,6 @@ setLoadingElements(loadingElements);
 
 document.addEventListener("DOMContentLoaded", () => {
   startIntroSequence(introElements);
-  playBackgroundMusic("../../assets/music/song1.mp3", 0.5);
 });
 
 export function initializeVisualization() {
@@ -32,7 +31,6 @@ export function initializeVisualization() {
       progressFill.style.width = "0%";
       progressText.textContent = "LOADING 0%";
     }
-    console.log(`Started loading: ${url}`);
   };
 
   loadManager.onProgress = function (url, itemsLoaded, itemsTotal) {
@@ -42,9 +40,6 @@ export function initializeVisualization() {
       progressFill.style.width = `${progress}%`;
       progressText.textContent = `LOADING ${Math.round(progress)}%`;
     }
-    console.log(`Progress fill element:`, progressFill);
-    console.log(`Progress text element:`, progressText);
-    console.log(`Loading progress: ${progress}%`);
   };
 
   loadManager.onLoad = function () {
@@ -56,7 +51,6 @@ export function initializeVisualization() {
         animateIntro();
       }, 500);
     }
-    console.log("Loading complete");
   };
 
   // Load textures and initialize scene...
