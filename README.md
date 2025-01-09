@@ -16,6 +16,14 @@ Welcome to **Cosmic Trajectories**, a captivating 3D visualization built with Th
 - Interactive 3D model of Earth with satellites
 - Dynamic space exploration powered by Three.js
 - Future expansions to include additional planets
+- Real-time 3D Earth visualization
+- Multiple satellite orbit tracking
+- Interactive camera controls
+- Loading screen with progress tracking
+- Intro sequence with animation
+- Atmospheric effects
+- Dynamic satellite trails
+- Satellite labels
 
 ### Installation
 1. Clone this repository:
@@ -31,17 +39,22 @@ Welcome to **Cosmic Trajectories**, a captivating 3D visualization built with Th
 3. Open `index.html` in your browser.
 
 ### Technologies:
-- Three.js for 3D rendering
-- JavaScript for interactivity
+- Three.js for 3D rendering and animation
+- JavaScript (ES6+) for core functionality
+- HTML5/CSS3 for UI components
 
 ### Architecture
 The project is structured as follows:
-- `assets/`: Contains textures and other static assets.
-- `public/`: Contains the main HTML file.
-- `src/`: Contains the core JavaScript files and utility modules.
+- `assets/`: Contains textures, videos, and other static assets
+- `public/`: Contains the main HTML file
+- `src/`: Contains the core JavaScript files and utility modules
 
 ### Core Files and Modules
 - **[src/core/index.js](src/core/index.js)**: The main entry point of the application. It sets up the Three.js scene, camera, renderer, and adds the Earth model, satellites, and starfield. It also handles the animation loop and window resizing.
+- **[src/utils/introSequence.js](src/utils/introSequence.js)**: Manages intro animation sequence
+- **[src/utils/loadingScreen.js](src/utils/loadingScreen.js)**: Creates and manages loading screen UI
+- **[src/utils/loadingState.js](src/utils/loadingState.js)**: Manages loading state across components
+- **[src/utils/satellite.js](src/utils/satellite.js)**: Handles satellite creation and trail rendering
 - **[src/utils/backgroundMusic.js](src/utils/backgroundMusic.js)**: Manages background music playback, including play/pause functionality and track selection.
 - **[src/utils/getFresnelMat.js](src/utils/getFresnelMat.js)**: Provides a function to create a Fresnel material shader for rendering atmospheric glow effects.
 - **[src/utils/getStarfield.js](src/utils/getStarfield.js)**: Generates a starfield with a specified number of stars and adds it to the scene.
