@@ -14,4 +14,53 @@
         color: white;
       }
 
-      
+.satellite-menu {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  padding: 15px;
+  color: white;
+  width: 250px;
+  transition: transform 0.3s ease;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.toggle-menu {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.satellite-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px), (max-height: 1024px) {
+  .satellite-menu {
+    width: 200px;
+  }
+  
+  .toggle-menu {
+    display: block;
+  }
+  
+  .satellite-menu.collapsed {
+    transform: translateX(calc(100% - 40px));
+  }
+  
+  .satellite-list {
+    max-height: 300px;
+  }
+}
