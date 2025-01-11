@@ -138,9 +138,9 @@ export function initializeVisualization() {
   satellites.push(
     createSatellite(loader, earthGroup, 120, 0, 550, 28.5, "Hubble")
   );
-  satellites.push(createSatellite(loader, earthGroup, 0, 0, 20200, 55, "GPS"));
+  satellites.push(createSatellite(loader, earthGroup, 0, 0, 2000, 55, "GPS"));
   satellites.push(
-    createSatellite(loader, earthGroup, 0, 0, 23222, 56, "Galileo")
+    createSatellite(loader, earthGroup, 0, 0, 3222, 56, "Galileo")
   );
   satellites.push(
     createSatellite(loader, earthGroup, 0, 0, 705, 98.2, "Landsat")
@@ -253,4 +253,41 @@ export function initializeVisualization() {
 
     mainLoop();
   }
+
+  function createSatelliteMenu() {
+    const menu = document.createElement('div');
+    menu.className = 'satellite-menu';
+    
+    const title = document.createElement('h2');
+    title.textContent = 'Satellites';
+    menu.appendChild(title);
+    
+    const list = document.createElement('ul');
+    list.className = 'satellite-list';
+    
+    const satelliteNames = [
+        "ISS",
+        "Starlink",
+        "Hubble",
+        "GPS",
+        "Galileo",
+        "Landsat",
+        "Sentinel",
+        "ALOS",
+        "Alsat",
+        "Amazônia"
+    ];
+    
+    satelliteNames.forEach((name, index) => {
+        const item = document.createElement('li');
+        item.className = 'satellite-item';
+        item.textContent = name;    
+        list.appendChild(item);
+    });
+    
+    menu.appendChild(list);
+    document.body.appendChild(menu);
+  }
+
+  createSatelliteMenu();
 }
