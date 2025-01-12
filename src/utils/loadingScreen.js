@@ -1,3 +1,4 @@
+//styles for the loading screen
 export function createLoadingScreen() {
     const loadingScreen = document.createElement('div');
     Object.assign(loadingScreen.style, {

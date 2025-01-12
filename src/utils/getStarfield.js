@@ -1,12 +1,18 @@
 import * as THREE from "three";
+//creating a dome of stars to represent the space.
 
 export default function getStarfield({ numStars = 500 } = {}) {
   function randomSpherePoint() {
+   // random radius between 25 and 50
     const radius = Math.random() * 25 + 25;
+    // random sphere coordinate
     const u = Math.random();
     const v = Math.random();
+
     const theta = 2 * Math.PI * u;
     const phi = Math.acos(2 * v - 1);
+
+    //converting for cartesian planes
     let x = radius * Math.sin(phi) * Math.cos(theta);
     let y = radius * Math.sin(phi) * Math.sin(theta);
     let z = radius * Math.cos(phi);
@@ -17,10 +23,12 @@ export default function getStarfield({ numStars = 500 } = {}) {
       minDist: radius,
     };
   }
-  const verts = [];
-  const colors = [];
-  const positions = [];
+  const verts = [];// vertex positions
+  const colors = [];// star colors
+  const positions = [];// star positions for later use
   let col;
+
+  //genrating stars based on the given input
   for (let i = 0; i < numStars; i += 1) {
     let p = randomSpherePoint();
     const { pos, hue } = p;
@@ -29,6 +37,7 @@ export default function getStarfield({ numStars = 500 } = {}) {
     verts.push(pos.x, pos.y, pos.z);
     colors.push(col.r, col.g, col.b);
   }
+  //asiigning the position and the color to the geometry
   const geo = new THREE.BufferGeometry();
   geo.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
   geo.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));

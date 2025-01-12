@@ -1,3 +1,4 @@
+//imports
 import * as THREE from "three";
 import { OrbitControls } from "jsm/controls/OrbitControls.js";
 import getStarfield from "../utils/getStarfield.js";
@@ -8,10 +9,11 @@ import { createSatellite } from "../utils/satellite.js";
 import { setLoadingElements,getLoadingElements } from "../utils/loadingState.js";
 
 
-const introElements = createIntroSequence();
-const loadingElements = createLoadingScreen();
-setLoadingElements(loadingElements);
+const introElements = createIntroSequence();//creating intro sequence
+const loadingElements = createLoadingScreen();//loading screen
+setLoadingElements(loadingElements);//sotring them for global access
 
+//load the intro sequene when dom is ready
 document.addEventListener("DOMContentLoaded", () => {
   startIntroSequence(introElements);
 });
@@ -19,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 export function initializeVisualization() {
   // Get loading elements including the loadingScreen
   const { loadingScreen, progressFill, progressText } = getLoadingElements();
-
+  // setting up loading mananger from three js
   const loadManager = new THREE.LoadingManager();
   let totalItems = 0;
   let loadedItems = 0;
@@ -69,6 +71,8 @@ export function initializeVisualization() {
   const earthGroup = new THREE.Group();
   earthGroup.rotation.z = (-23.4 * Math.PI) / 180;
   earthGroup.add(earthMesh);
+
+
   const scene = new THREE.Scene();
   scene.add(earthGroup);
   const camera = new THREE.PerspectiveCamera(
@@ -78,9 +82,13 @@ export function initializeVisualization() {
     1000
   );
   camera.position.z = 20;
+
+
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
+
+  //configuring orbital controls
   new OrbitControls(camera, renderer.domElement);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
@@ -191,7 +199,7 @@ export function initializeVisualization() {
 
     introLoop(performance.now());
   }
-
+//main animation loop
   function animateMain() {
     function mainLoop() {
       // Rotate Earth elements
@@ -253,7 +261,7 @@ export function initializeVisualization() {
 
     mainLoop();
   }
-
+ // creating satellite menu with basic dom manipulation
   function createSatelliteMenu() {
     const menu = document.createElement('div');
     menu.className = 'satellite-menu';

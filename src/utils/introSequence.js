@@ -4,6 +4,7 @@ import { getLoadingElements } from './loadingState.js';
 import playBackgroundMusic from "./backgroundMusic.js";
 
 export function createIntroSequence() {
+    //containing the main intro container
     const introContainer = document.createElement('div');
     Object.assign(introContainer.style, {
         position: 'fixed',
@@ -18,7 +19,7 @@ export function createIntroSequence() {
         justifyContent: 'center',
         background: '#000000'
     });
-
+    //inserting the intro vide stores in assets
     const introVideo = document.createElement('video');
     Object.assign(introVideo.style, {
         position: 'absolute',
@@ -29,7 +30,9 @@ export function createIntroSequence() {
     introVideo.muted = true;
     introVideo.autoplay = true;
     introVideo.src = '../../assets/videos/earth-intro.mp4';
+    introVideo.loop = true;
 
+    //overlaying the text on the video by increasing the z-index
     const textOverlay = document.createElement('div');
     Object.assign(textOverlay.style, {
         position: 'relative',
@@ -39,7 +42,7 @@ export function createIntroSequence() {
         maxWidth: '800px',
         padding: '2rem'
     });
-
+    //creating the welcome text
     const welcomeText = document.createElement('h1');
     Object.assign(welcomeText.style, {
         fontSize: '3rem',
@@ -58,6 +61,7 @@ export function createIntroSequence() {
         fontFamily: "'Inter', sans-serif"
     });
 
+    //creating the proceed button
     const proceedButton = document.createElement('button');
     proceedButton.textContent = 'Proceed to Visualization';
     Object.assign(proceedButton.style, {
@@ -72,7 +76,7 @@ export function createIntroSequence() {
         opacity: '0',
         fontFamily: "'Inter', sans-serif"
     });
-
+    //hover effect
     proceedButton.onmouseover = () => {
         proceedButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
     };
@@ -101,12 +105,15 @@ export function createIntroSequence() {
     return { introContainer, introVideo, welcomeText, descriptionText, proceedButton };
 }
 
+// Function to start the intro sequence
+
 export function startIntroSequence(introElements) {
+    // destructuring the intro elements
     const { introContainer, introVideo, welcomeText, descriptionText, proceedButton } = introElements;
     const { loadingScreen } = getLoadingElements();
 
     introVideo.play();
-
+    //animations for the welcome text
     setTimeout(() => {
         welcomeText.textContent = "Welcome to Cosmic Trajectories";
         welcomeText.style.animation = 'fadeIn 1.5s forwards';
@@ -120,16 +127,19 @@ export function startIntroSequence(introElements) {
     setTimeout(() => {
         proceedButton.style.animation = 'fadeIn 1.5s forwards';
     }, 4000);
-
+    //proceed button event listener
     proceedButton.addEventListener('click', () => {
+        //playing the background music
         playBackgroundMusic('../../assets/music/song1.mp3', 0.5);
         introContainer.style.transition = 'opacity 1s ease-out';
         introContainer.style.opacity = '0';
 
         setTimeout(() => {
+            //removing the intro container and adding the loading screen
             introContainer.remove();
             document.body.appendChild(loadingScreen);
+            //initialize the visualization after 1s
             initializeVisualization();
-        }, 1000);
+        },500);
     });
 }

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-
+//function to create a glowing effect around the earth
 function getFresnelMat({rimHex = 0x0088ff, facingHex = 0x000000} = {}) {
   const uniforms = {
     color1: { value: new THREE.Color(rimHex) },
@@ -8,6 +8,7 @@ function getFresnelMat({rimHex = 0x0088ff, facingHex = 0x000000} = {}) {
     fresnelScale: { value: 1.0 },
     fresnelPower: { value: 4.0 },
   };
+  //vertex shader(calculating the vertex position and calculating the fresnel factor using angle between camera and vertex)
   const vs = `
   uniform float fresnelBias;
   uniform float fresnelScale;
@@ -28,6 +29,7 @@ function getFresnelMat({rimHex = 0x0088ff, facingHex = 0x000000} = {}) {
     gl_Position = projectionMatrix * mvPosition;
   }
   `;
+  //fragment shader(creating the fresnel effect by mixing the two colors based on the reflection factor)
   const fs = `
   uniform vec3 color1;
   uniform vec3 color2;
@@ -39,13 +41,14 @@ function getFresnelMat({rimHex = 0x0088ff, facingHex = 0x000000} = {}) {
     gl_FragColor = vec4(mix(color2, color1, vec3(f)), f);
   }
   `;
+  //making sure the edge grows more than the center
+  // fresnelBias + fresnelScale * pow( 1.0 + dot( normalize( I ), worldNormal ), fresnelPower );
   const fresnelMat = new THREE.ShaderMaterial({
     uniforms: uniforms,
     vertexShader: vs,
     fragmentShader: fs,
     transparent: true,
     blending: THREE.AdditiveBlending,
-    // wireframe: true,
   });
   return fresnelMat;
 }
