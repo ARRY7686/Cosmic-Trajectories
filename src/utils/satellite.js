@@ -89,6 +89,7 @@ export function createSatellite(loader, earthGroup, longitude, latitude, height,
     return satellite;
 }
 
+//creating a label for the satellite by creating a canvas texture and applying it to a plane geometry. then adding it to the satellite group and returning the label group.
 function createLabel(name, satelliteGroup) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');

@@ -1,17 +1,24 @@
+//imports
 import * as THREE from "three";
 import { OrbitControls } from "jsm/controls/OrbitControls.js";
 import getStarfield from "../utils/getStarfield.js";
 import { getFresnelMat } from "../utils/getFresnelMat.js";
-import { createIntroSequence,startIntroSequence } from "../utils/introSequence.js";
+import {
+  createIntroSequence,
+  startIntroSequence,
+} from "../utils/introSequence.js";
 import { createLoadingScreen } from "../utils/loadingScreen.js";
 import { createSatellite } from "../utils/satellite.js";
-import { setLoadingElements,getLoadingElements } from "../utils/loadingState.js";
+import {
+  setLoadingElements,
+  getLoadingElements,
+} from "../utils/loadingState.js";
 
+const introElements = createIntroSequence(); //creating intro sequence
+const loadingElements = createLoadingScreen(); //loading screen
+setLoadingElements(loadingElements); //sotring them for global access
 
-const introElements = createIntroSequence();
-const loadingElements = createLoadingScreen();
-setLoadingElements(loadingElements);
-
+//load the intro sequene when dom is ready
 document.addEventListener("DOMContentLoaded", () => {
   startIntroSequence(introElements);
 });
@@ -19,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 export function initializeVisualization() {
   // Get loading elements including the loadingScreen
   const { loadingScreen, progressFill, progressText } = getLoadingElements();
-
+  // setting up loading mananger from three js
   const loadManager = new THREE.LoadingManager();
   let totalItems = 0;
   let loadedItems = 0;
@@ -69,6 +76,7 @@ export function initializeVisualization() {
   const earthGroup = new THREE.Group();
   earthGroup.rotation.z = (-23.4 * Math.PI) / 180;
   earthGroup.add(earthMesh);
+
   const scene = new THREE.Scene();
   scene.add(earthGroup);
   const camera = new THREE.PerspectiveCamera(
@@ -78,9 +86,12 @@ export function initializeVisualization() {
     1000
   );
   camera.position.z = 20;
+
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
+
+  //configuring orbital controls
   new OrbitControls(camera, renderer.domElement);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
@@ -164,7 +175,6 @@ export function initializeVisualization() {
   }
   window.addEventListener("resize", handleWindowResize, false);
 
-
   // Welcome Animation
   function animateIntro() {
     const introDuration = 5;
@@ -191,7 +201,7 @@ export function initializeVisualization() {
 
     introLoop(performance.now());
   }
-
+  //main animation loop
   function animateMain() {
     function mainLoop() {
       // Rotate Earth elements
@@ -253,41 +263,68 @@ export function initializeVisualization() {
 
     mainLoop();
   }
-
+  // creating satellite menu with basic dom manipulation
   function createSatelliteMenu() {
-    const menu = document.createElement('div');
-    menu.className = 'satellite-menu';
-    
-    const title = document.createElement('h2');
-    title.textContent = 'Satellites';
+    const menu = document.createElement("div");
+    menu.className = "satellite-menu";
+
+    const title = document.createElement("h2");
+    title.textContent = "Satellites";
     menu.appendChild(title);
-    
-    const list = document.createElement('ul');
-    list.className = 'satellite-list';
-    
+
+    const list = document.createElement("ul");
+    list.className = "satellite-list";
+
     const satelliteNames = [
-        "ISS",
-        "Starlink",
-        "Hubble",
-        "GPS",
-        "Galileo",
-        "Landsat",
-        "Sentinel",
-        "ALOS",
-        "Alsat",
-        "Amazônia"
+      "ISS",
+      "Starlink",
+      "Hubble",
+      "GPS",
+      "Galileo",
+      "Landsat",
+      "Sentinel",
+      "ALOS",
+      "Alsat",
+      "Amazônia",
     ];
-    
+
     satelliteNames.forEach((name, index) => {
-        const item = document.createElement('li');
-        item.className = 'satellite-item';
-        item.textContent = name;    
-        list.appendChild(item);
+      const item = document.createElement("li");
+      item.className = "satellite-item";
+      item.innerText = name;
+      item.setAttribute("data-value", name);
+      list.appendChild(item);
     });
-    
+
     menu.appendChild(list);
     document.body.appendChild(menu);
   }
-
   createSatelliteMenu();
+
+  function animateMenuLinks() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const items = document.querySelectorAll(".satellite-item");
+
+    items.forEach((item) => {
+      let iteration = 0;
+
+      const interval = setInterval(() => {
+        item.innerText = item.innerText
+          .split("")
+          .map((_, index) => {
+            if (index < iteration) {
+              return item.dataset.value[index];
+            }
+
+            return letters[Math.floor(Math.random() * 26)];
+          })
+          .join("");
+
+        if (iteration >= item.dataset.value.length) clearInterval(interval);
+
+        iteration += 1 / 10;
+      }, 30);
+    });
+  }
+  setTimeout(() => animateMenuLinks(), 1500);
 }
