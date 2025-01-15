@@ -67,9 +67,9 @@ export function initializeVisualization() {
 
   // Earth mesh
   const material = new THREE.MeshPhongMaterial({
-    map: loader.load("../../assets/textures/earthmap1k.png"),
-    specularMap: loader.load("../../assets/textures/earthspec1k.png"),
-    bumpMap: loader.load("../../assets/textures/earthbump1k.png"),
+    map: loader.load("../../assets/textures/earth/earthmap1k.png"),
+    specularMap: loader.load("../../assets/textures/earth/earthspec1k.png"),
+    bumpMap: loader.load("../../assets/textures/earth/earthbump1k.png"),
     bumpScale: 0.04,
   });
   const earthMesh = new THREE.Mesh(geometry, material);
@@ -98,7 +98,7 @@ export function initializeVisualization() {
 
   // Lights layer
   const lightsMat = new THREE.MeshBasicMaterial({
-    map: loader.load("../../assets/textures/earthlights1k.png"),
+    map: loader.load("../../assets/textures/earth/earthlights1k.png"),
     blending: THREE.AdditiveBlending,
   });
   const lightsMesh = new THREE.Mesh(geometry, lightsMat);
@@ -106,11 +106,11 @@ export function initializeVisualization() {
 
   // Clouds layer
   const cloudsMat = new THREE.MeshStandardMaterial({
-    map: loader.load("../../assets/textures/earthcloudmap.png"),
+    map: loader.load("../../assets/textures/earth/earthcloudmap.png"),
     transparent: true,
     opacity: 0.8,
     blending: THREE.AdditiveBlending,
-    alphaMap: loader.load("../../assets/textures/earthcloudmaptrans.png"),
+    alphaMap: loader.load("../../assets/textures/earth/earthcloudmaptrans.png"),
   });
   const cloudsMesh = new THREE.Mesh(geometry, cloudsMat);
   cloudsMesh.scale.setScalar(1.003);
