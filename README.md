@@ -1,32 +1,29 @@
 # Cosmic Trajectories
 
-Welcome to **Cosmic Trajectories**, a captivating 3D visualization built with Three.js. Explore Earth and its major satellites in orbit, providing an interactive and immersive experience of space. As the project evolves, we aim to expand the view to include more planets, offering a comprehensive look at our solar system.
+A stunning 3D visualization of Earth and its satellites built with Three.js, providing an interactive space exploration experience.
 
 ## Table of Contents
 - [Features](#features)
-- [Installation](#installation)
-- [Technologies](#technologies)
+- [Quick Start](#quick-start)
+- [Technology Stack](#technology-stack)
 - [Architecture](#architecture)
 - [Core Files and Modules](#core-files-and-modules)
 - [File Structure](#file-structure)
 - [License](#license)
 - [Contributing](#contributing)
 
-### Features:
-- Interactive 3D model of Earth with satellites
-- Dynamic space exploration powered by Three.js
-- Future expansions to include additional planets
-- Real-time 3D Earth visualization
-- Multiple satellite orbit tracking
-- Interactive camera controls
-- Loading screen with progress tracking
-- Intro sequence with animation
-- Atmospheric effects
-- Dynamic satellite trails
-- Satellite labels
+## Features
 
-### Installation
-1. Clone this repository:
+- 🌍 Detailed 3D Earth model with atmospheric effects
+- 🛰 Real-time satellite orbit visualization 
+- 🌟 Interactive starfield background
+- 🎵 Ambient background music
+- 🎨 Custom loading and intro sequences
+- 📱 Responsive design with mobile support
+
+## Quick Start
+
+1. Clone the repository
    ```bash
    git clone https://github.com/ARRY7686/Cosmic-Trajectories.git
    ```
@@ -36,12 +33,14 @@ Welcome to **Cosmic Trajectories**, a captivating 3D visualization built with Th
    cd Cosmic-Trajectories
    ```
 
-3. Open `index.html` in your browser.
+3. Open [index.html](index.html) in a modern web browser
+4. No build step required - uses ES modules
 
-### Technologies:
-- Three.js for 3D rendering and animation
-- JavaScript (ES6+) for core functionality
-- HTML5/CSS3 for UI components
+## Technology Stack
+
+- Three.js for 3D rendering
+- Pure JavaScript (ES6+) 
+- CSS3 for styling
 
 ### Architecture
 The project is structured as follows:
@@ -70,4 +69,4 @@ The project is structured as follows:
 This project is licensed under the *GPL-3.0 License*.
 
 ### Contributing
-Feel free to contribute by opening issues, submitting pull requests, or suggesting improvements.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
