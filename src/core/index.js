@@ -19,6 +19,9 @@ import {
   createSatelliteMenu,
   animateMenuLinks,
 } from "../components/earth/earthSatellites.js";
+import { initPlanets } from "../components/planets/planets.js";
+
+
 
 const introElements = createIntroSequence(); //creating intro sequence
 const loadingElements = createLoadingScreen(); //loading screen
@@ -37,6 +40,18 @@ export function initializeVisualization() {
   let totalItems = 0;
   let loadedItems = 0;
   let introAnimationDone = false;
+  const scene = new THREE.Scene();
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const startBtn = document.getElementById("start-btn");
+    if (startBtn) {
+        startBtn.addEventListener("click", () => {
+            initPlanets(scene);
+            startBtn.disabled = true;
+        });
+    }
+});
 
   loadManager.onStart = function (url, itemsLoaded, itemsTotal) {
     totalItems = itemsTotal;
@@ -70,7 +85,9 @@ export function initializeVisualization() {
   const loader = new THREE.TextureLoader(loadManager);
   const { earthGroup, earthMesh, lightsMesh, cloudsMesh, glowMesh } = createEarth(loader);
 
-  const scene = new THREE.Scene();
+  // Initialize planet menu and orbit
+  initPlanets(scene);
+
   scene.add(earthGroup);
   const camera = new THREE.PerspectiveCamera(
     75,
